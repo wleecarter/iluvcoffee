@@ -51,8 +51,12 @@ $ npm run start:prod
 # unit tests
 $ npm run test
 
+$ npm run test:watch -- coffees.service
+
 # e2e tests
 $ npm run test:e2e
+
+$ npm run test:e2e -- coffees
 
 # test coverage
 $ npm run test:cov

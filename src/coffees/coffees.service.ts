@@ -4,8 +4,7 @@ import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
 import { Repository } from 'typeorm';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
-import { Coffee } from './entities/coffee.entity';
-import { Flavor } from './entities/flavor.entity';
+import { Coffee, Flavor } from './entities';
 
 @Injectable()
 export class CoffeesService {
