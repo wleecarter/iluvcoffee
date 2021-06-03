@@ -10,6 +10,5 @@ export class PaginationQueryDto {
 
   @Type(() => Number)
   @IsOptional()
-  @IsPositive()
   offset: number;
 }
