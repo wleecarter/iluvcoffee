@@ -1,3 +1,5 @@
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
 import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
@@ -11,11 +13,7 @@ async function bootstrap() {
 
   app.setGlobalPrefix(GLOBAL_PREFIX);
 
-  // validate input data
-  // used in conjunction with `class-validator` decorators
   app.useGlobalPipes(
-    // autotransform requests into DTO objects
-    // will also convert primitive types like string => number
     new ValidationPipe({
       whitelist: true,
       transform: true,
@@ -25,6 +23,17 @@ async function bootstrap() {
       },
     }),
   );
+
+  const options = new DocumentBuilder()
+    .setTitle('Iluvcoffee')
+    .setDescription('Coffee application')
+    .setVersion('1.0')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, options);
+
+  SwaggerModule.setup(GLOBAL_PREFIX, app, document);
+
   await app.listen(PORT, () => {
     Logger.log('Listening at http://localhost:' + PORT + '/' + GLOBAL_PREFIX);
   });
