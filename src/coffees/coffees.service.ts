@@ -1,7 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
+import { ConfigService } from '@nestjs/config';
 import { Repository } from 'typeorm';
+import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { Coffee, Flavor } from './entities';
@@ -13,7 +14,18 @@ export class CoffeesService {
     private readonly coffeeRepository: Repository<Coffee>,
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
-  ) {}
+    private readonly configService: ConfigService,
+  ) {
+    /* 
+      Not really necessary. Just an example of how to 
+      access process.env variables from ConfigService 
+      Be sure to import `ConfigModule` into `CoffeesModule`
+
+      `<string>` assertion is not required since `get()` defaults to string
+    */
+    const databaseName = this.configService.get<string>('DATABASE_NAME');
+    console.log(`database name is "${databaseName}"`);
+  }
 
   async findAll(paginationQuery: PaginationQueryDto) {
     const { limit, offset } = paginationQuery;
