@@ -3,8 +3,20 @@ import { Test, TestingModule } from '@nestjs/testing';
 
 import { CoffeesController } from './coffees.controller';
 import { CoffeesService } from './coffees.service';
-import { Connection } from 'typeorm';
+import { ConfigService } from '@nestjs/config';
+import { Repository } from 'typeorm';
 import { getRepositoryToken } from '@nestjs/typeorm';
+
+/**
+ * MockRepository is an object that consists of some of the properties
+ * that the Repository type contains. These properties are all of type
+ * `jest.Mock<>`
+ */
+type MockRepository<T = any> = Partial<Record<keyof Repository<T>, jest.Mock>>;
+const createMockRepository = <T = any>(): MockRepository<T> => ({
+  findOne: jest.fn(),
+  create: jest.fn(),
+});
 
 describe('CoffeesController', () => {
   let controller: CoffeesController;
@@ -14,9 +26,20 @@ describe('CoffeesController', () => {
       controllers: [CoffeesController],
       providers: [
         CoffeesService,
-        { provide: Connection, useValue: {} },
-        { provide: getRepositoryToken(Flavor), useValue: {} },
-        { provide: getRepositoryToken(Coffee), useValue: {} },
+        {
+          provide: getRepositoryToken(Flavor),
+          useValue: createMockRepository(),
+        },
+        {
+          provide: getRepositoryToken(Coffee),
+          useValue: createMockRepository(),
+        },
+        {
+          provide: ConfigService,
+          useValue: {
+            get: () => 'mock value',
+          },
+        },
       ],
     }).compile();
 
