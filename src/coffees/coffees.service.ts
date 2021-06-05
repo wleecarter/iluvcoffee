@@ -15,17 +15,7 @@ export class CoffeesService {
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
     private readonly configService: ConfigService,
-  ) {
-    /* 
-      Not really necessary. Just an example of how to 
-      access process.env variables from ConfigService 
-      Be sure to import `ConfigModule` into `CoffeesModule`
-
-      `<string>` assertion is not required since `get()` defaults to string
-    */
-    const databaseName = this.configService.get<string>('DATABASE_NAME');
-    console.log(`database name is "${databaseName}"`);
-  }
+  ) {}
 
   async findAll(paginationQuery: PaginationQueryDto) {
     const { limit, offset } = paginationQuery;
@@ -86,5 +76,17 @@ export class CoffeesService {
       return existingFlavor;
     }
     return this.flavorRepository.create({ name });
+  }
+
+  /* 
+      Not really necessary. Just an example of how to 
+      access process.env variables from ConfigService 
+      Be sure to import `ConfigModule` into `CoffeesModule`
+
+      `<string>` assertion is not required since `get()` defaults to string
+    */
+  private demoMethod(): void {
+    const databaseName = this.configService.get<string>('DATABASE_NAME');
+    console.log(`database name is "${databaseName}"`);
   }
 }
