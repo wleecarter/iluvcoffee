@@ -9,15 +9,17 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Public } from '../common/decorators/public.decorator';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { CoffeesService } from './coffees.service';
 import { CreateCoffeeDto, UpdateCoffeeDto } from './dto';
 
-@ApiTags('coffees')
+@ApiTags('coffees') // used by swagger for grouping routes
 @Controller('coffees')
 export class CoffeesController {
   constructor(private readonly coffeesService: CoffeesService) {}
 
+  @Public()
   @Get()
   findAll(@Query() paginationQuery: PaginationQueryDto) {
     return this.coffeesService.findAll(paginationQuery);

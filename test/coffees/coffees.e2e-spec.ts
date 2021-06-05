@@ -68,6 +68,7 @@ describe('[Feature] Coffees - /coffees', () => {
   it('Get all [GET /]', () => {
     return request(httpServer)
       .get('/coffees')
+      .expect(HttpStatus.OK)
       .then(({ body }) => {
         expect(body.length).toBeGreaterThan(0);
         expect(body[0]).toEqual(expectedPartialCoffee);
@@ -77,6 +78,7 @@ describe('[Feature] Coffees - /coffees', () => {
   it('Get one [GET /:id]', () => {
     return request(httpServer)
       .get('/coffees/1')
+      .expect(HttpStatus.OK)
       .then(({ body }) => {
         expect(body).toEqual(expectedPartialCoffee);
       });
@@ -90,11 +92,13 @@ describe('[Feature] Coffees - /coffees', () => {
     return request(httpServer)
       .patch('/coffees/1')
       .send(updateCoffeeDto)
+      .expect(HttpStatus.OK)
       .then(({ body }) => {
         expect(body.name).toEqual(updateCoffeeDto.name);
 
         return request(httpServer)
           .get('/coffees/1')
+          .expect(HttpStatus.OK)
           .then(({ body }) => {
             expect(body.name).toEqual(updateCoffeeDto.name);
           });
